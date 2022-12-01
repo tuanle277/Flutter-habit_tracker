@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../class/Habit.dart';
+import '../class/habit.dart';
 
 class HabitCell extends StatefulWidget {
   final Habit habit;
@@ -29,6 +29,7 @@ class _HabitCellState extends State<HabitCell> {
     });
   }
 
+// whatever is 3 was widget.habit.timeDone.toDouble()
   void _awaitReturnValueFromSecondScreen(BuildContext context) async {
     // start the SecondScreen and wait for it to finish with a result
     final result = await Navigator.pushNamed(context, '/oneHabitPage',
@@ -55,7 +56,7 @@ class _HabitCellState extends State<HabitCell> {
               Row(
                 children: [
                   InkWell(
-                    onTap: didTheHabit,
+                    onTap: () {},
                     splashColor: const Color(0xff727be8),
                     child: Container(
                       padding: const EdgeInsets.all(5.0),
@@ -94,7 +95,7 @@ class _HabitCellState extends State<HabitCell> {
                           ),
                         ),
                         Text(
-                          '${widget.habit.timeDone} out of 7 days this week',
+                          ' ${widget.habit.timeDone} out of 7 days this week',
                           style:
                               const TextStyle(color: Colors.grey, fontSize: 16),
                         ),
@@ -107,7 +108,7 @@ class _HabitCellState extends State<HabitCell> {
                 padding: const EdgeInsets.only(top: 12),
                 child: LinearProgressIndicator(
                   minHeight: 5,
-                  value: widget.habit.timeDone.toDouble() / 7,
+                  value: widget.habit.timeDone / 7,
                   backgroundColor: const Color(0xff1c232d),
                   valueColor: const AlwaysStoppedAnimation(
                     Colors.deepPurple,

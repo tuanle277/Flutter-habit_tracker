@@ -1,45 +1,55 @@
-import 'dart:convert';
+import 'package:hive/hive.dart';
 
+part 'habit.g.dart';
+
+@HiveType(typeId: 0)
 class Habit {
-  int? id;
-  late String desc;
-  late List<DateTime> dateDone;
-  late int timeDone;
-  late bool done;
+  // int? id;
+  @HiveField(0)
+  String desc;
+  @HiveField(1)
+  bool done;
+  @HiveField(2)
+  List<DateTime> dateDone;
+  @HiveField(3)
+  int timeDone;
 
-  Habit(int newId, String newDesc, List<DateTime> newDateDone) {
-    id = newId;
-    desc = newDesc;
-    dateDone = newDateDone;
-    timeDone = dateDone.length;
-    done = false;
-  }
+  Habit(
+      // int newId,
+      // String newDesc
+      // List<DateTime> newDateDone
+      {
+      // id = newId;
+      required this.desc,
+      required this.dateDone,
+      required this.timeDone,
+      required this.done});
 
-  Habit.fromMap(Map<dynamic, dynamic> map) {
-    id = map['id'];
-    desc = map['desc'];
-    dateDone = map['dateDone'];
-  }
+  // factory Habit.fromMap(Map<String, dynamic> json) => Habit(
+  //     // id = map['id'];
+  //     desc: json['desc'],
+  //     dateDone = json['dateDone'];
+  //     done: false);
 
-  Map<String, dynamic> toMap1() {
-    var map = <String, dynamic>{
-      'id': id,
-      'desc': desc,
-      // 'dateDone': jsonEncode(dateDone),
-    };
-    return map;
-  }
+  // Map<String, dynamic> toMap1() {
+  //   var map = <String, dynamic>{
+  //     // 'id': id,
+  //     'desc': desc,
+  //     // 'dateDone': jsonEncode(dateDone),
+  //   };
+  //   return map;
+  // }
 
-  Map<String, dynamic> toMap2(DateTime date) {
-    var map = <String, dynamic>{
-      'id': id,
-      'dateDone': jsonEncode(date),
-    };
-    return map;
-  }
+  // Map<String, dynamic> toMap2(DateTime date) {
+  //   var map = <String, dynamic>{
+  //     // 'id': id,
+  //     'dateDone': jsonEncode(date),
+  //   };
+  //   return map;
+  // }
 
-  @override
-  String toString() {
-    return 'Dog{id: $id, name: $desc, timeDone: $dateDone}';
-  }
+  // @override
+  // String toString() {
+  //   return 'Dog{id: $id, name: $desc, timeDone: $dateDone}';
+  // }
 }

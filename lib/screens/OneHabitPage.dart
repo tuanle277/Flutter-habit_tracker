@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 
-import '../class/Habit.dart';
+import '../class/habit.dart';
 
 class OneHabitPage extends StatefulWidget {
   @override
   State<OneHabitPage> createState() => _OneHabitPageState();
 }
 
+// whatever is 3 was widget.timeDone
 class _OneHabitPageState extends State<OneHabitPage> {
   @override
   Widget build(BuildContext context) {
@@ -112,7 +113,7 @@ class _OneHabitPageState extends State<OneHabitPage> {
               horizontal: 20,
             ),
             child: Text(
-              "${habit.timeDone} from 7 this week",
+              "3 from 7 this week",
               style: TextStyle(
                 color: Colors.grey[500],
                 fontSize: 21,
@@ -127,7 +128,7 @@ class _OneHabitPageState extends State<OneHabitPage> {
               horizontal: 20,
             ),
             child: LinearProgressIndicator(
-              value: habit.timeDone / 7,
+              value: 3 / 7,
               backgroundColor: const Color(0xff1c232d),
               valueColor: const AlwaysStoppedAnimation(
                 Color(0xff701bff),
@@ -160,7 +161,7 @@ class _OneHabitPageState extends State<OneHabitPage> {
               children: <Widget>[
                 Expanded(
                   child: Text(
-                    "${((habit.timeDone / 7) * 100).toInt()}%",
+                    "${(3 / 7 * 100).toInt()}%",
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
@@ -169,7 +170,7 @@ class _OneHabitPageState extends State<OneHabitPage> {
                   ),
                 ),
                 CircularProgressIndicator(
-                  value: habit.timeDone / 7,
+                  value: 3 / 7,
                   backgroundColor: Colors.grey[600],
                   valueColor: const AlwaysStoppedAnimation(
                     Color(0xff701bff),

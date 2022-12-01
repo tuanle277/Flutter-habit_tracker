@@ -1,9 +1,9 @@
-import 'dart:async';
-import 'dart:io' as io;
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
-import '../class/Habit.dart';
-import 'package:path_provider/path_provider.dart';
+// import 'dart:async';
+// import 'dart:io' as io;
+// import 'package:path/path.dart';
+// import 'package:sqflite/sqflite.dart';
+// import '../class/Habit.dart';
+// import 'package:path_provider/path_provider.dart';
 
 // class DBase {
 //   void data() async {
@@ -81,106 +81,106 @@ import 'package:path_provider/path_provider.dart';
 //   }
 // }
 
-class DBHelper {
-  static Database? _db;
-  static const String ID = 'id';
-  static const String DESC = 'desc';
-  static const String DATEDONE = 'dateDone';
-  static const String TABLE1 = 'Habits';
-  static const String TABLE2 = 'DatesDone';
-  static const String DB_NAME = 'habit_database.db';
+// class DBHelper {
+//   static Database? _db;
+//   static const String ID = 'id';
+//   static const String DESC = 'desc';
+//   static const String DATEDONE = 'dateDone';
+//   static const String TABLE1 = 'Habits';
+//   static const String TABLE2 = 'DatesDone';
+//   static const String DB_NAME = 'habit_database.db';
 
-  Future<Database> get db async {
-    if (_db != null) {
-      return _db!;
-    }
-    _db = await initDb();
-    return _db!;
-  }
+//   Future<Database> get db async {
+//     if (_db != null) {
+//       return _db!;
+//     }
+//     _db = await initDb();
+//     return _db!;
+//   }
 
-  Future<void> deleteDatabase(String path) =>
-      databaseFactory.deleteDatabase(path);
-  initDb() async {
-    // init db
-    print("init db");
-    // String databasesPath = await getDatabasesPath();
-    // String path = join(databasesPath, DB_NAME);
+//   Future<void> deleteDatabase(String path) =>
+//       databaseFactory.deleteDatabase(path);
+//   initDb() async {
+//     // init db
+//     print("init db");
+//     // String databasesPath = await getDatabasesPath();
+//     // String path = join(databasesPath, DB_NAME);
 
-    io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentsDirectory.path, DB_NAME);
-    if (await databaseExists(path)) {
-      deleteDatabase(path);
-    }
-    print("table created");
+//     io.Directory documentsDirectory = await getApplicationDocumentsDirectory();
+//     String path = join(documentsDirectory.path, DB_NAME);
+//     if (await databaseExists(path)) {
+//       deleteDatabase(path);
+//     }
+//     print("table created");
 
-    var db = await openDatabase(path, version: 1, onCreate: _onCreate);
-    return db;
-  }
+//     var db = await openDatabase(path, version: 1, onCreate: _onCreate);
+//     return db;
+//   }
 
-  _onCreate(Database db, int version) async {
-    print("table created");
-    //tạo database
-    await db
-        .execute("CREATE TABLE $TABLE1 ($ID INTEGER PRIMARY KEY, $DESC TEXT)");
-    await db.execute("CREATE TABLE $TABLE2 ($ID INTEGER PRIMARY KEY)");
-  }
+//   _onCreate(Database db, int version) async {
+//     print("table created");
+//     //tạo database
+//     await db
+//         .execute("CREATE TABLE $TABLE1 ($ID INTEGER PRIMARY KEY, $DESC TEXT)");
+//     await db.execute("CREATE TABLE $TABLE2 ($ID INTEGER PRIMARY KEY)");
+//   }
 
-  void _onUpgrade(Database db) async {
-    await db.execute("ALTER TABLE $TABLE2 ADD COLUMN newCol TEXT;");
-  }
+//   void _onUpgrade(Database db) async {
+//     await db.execute("ALTER TABLE $TABLE2 ADD COLUMN newCol TEXT;");
+//   }
 
-  Future<Habit> save(Habit habit) async {
-    // insert employee vào bảng đơn giản
-    print("insert db");
-    var dbHabit = await db;
-    habit.id = await dbHabit.insert(TABLE1, habit.toMap1());
-    for (DateTime date in habit.dateDone) {
-      habit.id = await dbHabit.insert(TABLE2, habit.toMap2(date));
-    }
-    return habit;
-    /*
-    await dbClient.transaction((txn) async {
-      var query = "INSERT INTO $TABLE ($NAME) VALUES ('" + employee.name + "')";
-      return await txn.rawInsert(query); //các bạn có thể sử dụng rawQuery nếu truy vẫn phức tạp để thay thế cho các phước thức có sẵn của lớp Database.
-    });
-    */
-  }
+//   Future<Habit> save(Habit habit) async {
+//     // insert employee vào bảng đơn giản
+//     print("insert db");
+//     var dbHabit = await db;
+//     habit.id = await dbHabit.insert(TABLE1, habit.toMap1());
+//     for (DateTime date in habit.dateDone) {
+//       habit.id = await dbHabit.insert(TABLE2, habit.toMap2(date));
+//     }
+//     return habit;
+//     /*
+//     await dbClient.transaction((txn) async {
+//       var query = "INSERT INTO $TABLE ($NAME) VALUES ('" + employee.name + "')";
+//       return await txn.rawInsert(query); //các bạn có thể sử dụng rawQuery nếu truy vẫn phức tạp để thay thế cho các phước thức có sẵn của lớp Database.
+//     });
+//     */
+//   }
 
-  Future<List<Habit>> getHabits() async {
-    print("get db");
+//   Future<List<Habit>> getHabits() async {
+//     print("get db");
 
-    //get list đơn giản
-    var dbHabit = await db;
-    List<Map> maps1 = await dbHabit.query(TABLE1, columns: [ID, DESC]);
-    List<Map> maps2 = await dbHabit.query(TABLE2, columns: [ID, DATEDONE]);
-    //List<Map> maps = await dbHabit.rawQuery("SELECT * FROM $TABLE");
-    List<Habit> habits = [];
-    if (maps1.isNotEmpty) {
-      for (int i = 0; i < maps1.length; i++) {
-        habits.add(Habit.fromMap(maps1[i]));
-        habits[i].dateDone = Habit.fromMap(maps2[i]).dateDone;
-      }
-    }
-    return habits;
-  }
+//     //get list đơn giản
+//     var dbHabit = await db;
+//     List<Map> maps1 = await dbHabit.query(TABLE1, columns: [ID, DESC]);
+//     List<Map> maps2 = await dbHabit.query(TABLE2, columns: [ID, DATEDONE]);
+//     //List<Map> maps = await dbHabit.rawQuery("SELECT * FROM $TABLE");
+//     List<Habit> habits = [];
+//     if (maps1.isNotEmpty) {
+//       for (int i = 0; i < maps1.length; i++) {
+//         habits.add(Habit.fromMap(maps1[i]));
+//         habits[i].dateDone = Habit.fromMap(maps2[i]).dateDone;
+//       }
+//     }
+//     return habits;
+//   }
 
-  // Future<int> delete(int id) async {
-  //   // xóa
-  //   var dbHabit = await db;
-  //   return await dbHabit.delete(TABLE1,
-  //       where: '$ID = ?',
-  //       whereArgs: [id]); //where - xóa tại ID nào, whereArgs - argument là gì?
-  // }
+//   // Future<int> delete(int id) async {
+//   //   // xóa
+//   //   var dbHabit = await db;
+//   //   return await dbHabit.delete(TABLE1,
+//   //       where: '$ID = ?',
+//   //       whereArgs: [id]); //where - xóa tại ID nào, whereArgs - argument là gì?
+//   // }
 
-  // Future<int> update(Habit habit) async {
-  //   var dbHabit = await db;
-  //   return await dbHabit
-  //       .update(TABLE, habit.toMap(), where: '$ID = ?', whereArgs: [habit.id]);
-  // }
+//   // Future<int> update(Habit habit) async {
+//   //   var dbHabit = await db;
+//   //   return await dbHabit
+//   //       .update(TABLE, habit.toMap(), where: '$ID = ?', whereArgs: [habit.id]);
+//   // }
 
-  Future close() async {
-    //close khi không sử dụng
-    var dbHabit = await db;
-    dbHabit.close();
-  }
-}
+//   Future close() async {
+//     //close khi không sử dụng
+//     var dbHabit = await db;
+//     dbHabit.close();
+//   }
+// }

@@ -3,9 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
-import '../class/Habit.dart';
-import '../class/HabitPage.dart';
-
 class HomePage extends StatefulWidget {
   @override
   State<HomePage> createState() => _HomePageState();

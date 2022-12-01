@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 
-import '../class/Habit.dart';
+import '../class/habit.dart';
 
 import '../widget/HabitCell.dart';
 
@@ -29,8 +30,6 @@ class _HabitPageState extends State<HabitPage> {
       week.add(firstDayOfWeek);
       firstDayOfWeek = firstDayOfWeek.add(Duration(days: 1));
     }
-
-    print(week);
 
     final _descController = TextEditingController();
 
@@ -130,7 +129,7 @@ class _HabitPageState extends State<HabitPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SizedBox(height: 65),
+                  SizedBox(height: mediaQuery.height / 15),
                   Row(
                     children: [
                       Column(
@@ -293,20 +292,22 @@ class _HabitPageState extends State<HabitPage> {
                   ),
                 ),
                 Flexible(
-                  child: SingleChildScrollView(
-                    physics: const ScrollPhysics(),
-                    child: ListView.builder(
-                      primary: false,
-                      shrinkWrap: true,
-                      itemBuilder: (
-                        context,
-                        index,
-                      ) {
-                        return HabitCell(
-                            widget._listOfHabits[index], widget._done);
-                      },
-                      itemCount: widget._listOfHabits.length,
-                    ),
+                  child: WatchBoxBuilder(
+                    box: Hive.box("habits"),
+                    builder: (context, habitList) {
+                      return ListView.builder(
+                        primary: false,
+                        shrinkWrap: true,
+                        itemBuilder: (
+                          context,
+                          index,
+                        ) {
+                          final habit = habitList.getAt(index) as Habit;
+                          return HabitCell(habit, widget._done);
+                        },
+                        itemCount: habitList.length,
+                      );
+                    },
                   ),
                 ),
               ],
